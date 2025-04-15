@@ -1,10 +1,9 @@
-from flask import Flask, request, jsonify, make_response
-from flask_restx import Api, Resource, fields
-from config import DevConfig
+from flask import Flask
+from flask_restx import Api
 from models import Blogs, User
 from exts import db
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager, jwt_required
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from auth import auth_ns
 from blogs import blog_ns
