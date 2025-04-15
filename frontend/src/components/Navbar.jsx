@@ -1,0 +1,216 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Menu, X, ChevronDown, Search, Bell, User } from "lucide-react"
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white/50 backdrop-blur-sm"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
+            <a href="#" className="flex items-center">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold">
+                A
+              </div>
+              <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                Awesome
+              </span>
+            </a>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            <a
+              href="#"
+              className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group"
+            >
+              Home
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+            </a>
+            <div className="relative group">
+              <button className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center">
+                Products
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </button>
+              <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                  Product 1
+                </a>
+                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                  Product 2
+                </a>
+                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                  Product 3
+                </a>
+              </div>
+            </div>
+            <a
+              href="#"
+              className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group"
+            >
+              Services
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+            </a>
+            <a
+              href="#"
+              className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group"
+            >
+              About
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+            </a>
+            <a
+              href="#"
+              className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group"
+            >
+              Contact
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+            </a>
+          </div>
+
+          {/* Right side icons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
+              <Search className="h-5 w-5" />
+            </button>
+            <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200 relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+            <button className="flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors duration-200">
+              <User className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button onClick={toggleMenu} className="text-gray-500 hover:text-purple-600 focus:outline-none">
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+          <a
+            href="#"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+          >
+            Home
+          </a>
+          <div className="relative">
+            <button
+              className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 flex justify-between items-center"
+              onClick={(e) => {
+                e.preventDefault()
+                const submenu = e.currentTarget.nextElementSibling
+                if (submenu.style.maxHeight) {
+                  submenu.style.maxHeight = null
+                } else {
+                  submenu.style.maxHeight = submenu.scrollHeight + "px"
+                }
+              }}
+            >
+              Products
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            <div className="overflow-hidden max-h-0 transition-all duration-300" style={{ maxHeight: "0px" }}>
+              <a
+                href="#"
+                className="block pl-6 pr-3 py-2 text-base font-medium text-gray-500 hover:text-purple-600 hover:bg-purple-50"
+              >
+                Product 1
+              </a>
+              <a
+                href="#"
+                className="block pl-6 pr-3 py-2 text-base font-medium text-gray-500 hover:text-purple-600 hover:bg-purple-50"
+              >
+                Product 2
+              </a>
+              <a
+                href="#"
+                className="block pl-6 pr-3 py-2 text-base font-medium text-gray-500 hover:text-purple-600 hover:bg-purple-50"
+              >
+                Product 3
+              </a>
+            </div>
+          </div>
+          <a
+            href="#"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+          >
+            Services
+          </a>
+          <a
+            href="#"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+          >
+            About
+          </a>
+          <a
+            href="#"
+            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+          >
+            Contact
+          </a>
+          <div className="pt-4 pb-3 border-t border-gray-200">
+            <div className="flex items-center px-3">
+              <div className="flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+                  <User className="h-5 w-5" />
+                </div>
+              </div>
+              <div className="ml-3">
+                <div className="text-base font-medium text-gray-800">User Name</div>
+                <div className="text-sm font-medium text-gray-500">user@example.com</div>
+              </div>
+              <div className="ml-auto flex space-x-3">
+                <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
+                  <Bell className="h-5 w-5" />
+                </button>
+                <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
+                  <Search className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+export default Navbar
