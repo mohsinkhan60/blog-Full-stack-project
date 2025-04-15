@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from config import DevConfig
-from models import Blogs
+from models import Blogs, User
 from exts import db
 from flask_migrate import Migrate
 
@@ -22,6 +22,35 @@ blogs_model = api.model(
         "author": fields.String(),
     },
 )
+signup_model = api.model(
+    "Signup",
+    {
+        "username": fields.String(),
+        "email": fields.String(),
+        "password": fields.String(),
+    },
+)
+
+login_model = api.model(
+    "Login",
+    {
+        "email": fields.String(),
+        "password": fields.String(),
+    },
+)
+
+@api.route("/signup")
+class SignupResource(Resource):
+    @api.expect(signup_model)
+    def post(self):
+        data = request.get_json()
+        new_user = User(
+            username=data.get("username"),
+            email=data.get("email"),
+            password=data.get("password"),
+        )
+        new_user.save()
+        return {"message": "User created successfully"}, 201
 
 @api.route("/hello")
 class HelloWorld(Resource):
