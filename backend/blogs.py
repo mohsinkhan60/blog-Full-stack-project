@@ -1,8 +1,7 @@
-
 from flask_restx import Namespace, Resource, fields
-from flask import Flask, request, jsonify, make_response
+from flask import request
 from flask_restx import Api, Resource, fields
-from models import Blogs, User
+from models import Blogs
 from flask_jwt_extended import jwt_required
 
 

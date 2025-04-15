@@ -1,9 +1,8 @@
-
 from flask import request, jsonify, make_response
 from flask_restx import Resource, fields, Namespace
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token
-from models import Blogs, User
+from models import User
 
 auth_ns = Namespace('auth', description='A namespace for our Authentication')
 
