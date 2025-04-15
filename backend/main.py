@@ -51,6 +51,10 @@ class SignupResource(Resource):
         )
         new_user.save()
         return {"message": "User created successfully"}, 201
+    
+@api.route("/login")
+class LoginResource(Resource):
+    pass
 
 @api.route("/hello")
 class HelloWorld(Resource):
@@ -65,6 +69,8 @@ class BlogsResource(Resource):
         return blogs
 
     @api.marshal_with(blogs_model)
+    # For showing payload in Docs Or Swagger
+    @api.expect(blogs_model) 
     def post(self):
         data = request.get_json()
         new_blog = Blogs(
