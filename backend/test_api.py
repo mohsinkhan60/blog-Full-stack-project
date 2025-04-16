@@ -9,15 +9,17 @@ class APITestCase(unittest.TestCase):
       self.client = self.app.test_client()
 
       with self.app.app_context():
-         db.init_app(self.app)
+         # db.init_app(self.app)
          db.create_all()
 
    def test_hello_world(self):
       hello_response = self.client.get('/blog/hello')
       json = hello_response.json
-      #   print(json)
+      #  print(json)
       self.assertEqual(hello_response.status_code, 200)
-      self.assertEqual(json['message'], 'hello world')
+      self.assertEqual(json['message'], 'Hello, World!')
+
+   
 
    def tearDown(self):
       with self.app.app_context():
