@@ -17,18 +17,18 @@ def create_app(config):
     CORS(app)
 
     db.init_app(app)
-    migrate = Migrate(app, db)
+    # migrate = Migrate(app, db)
     JWTManager(app)
 
     api = Api(app, doc='/docs')
     api.add_namespace(blog_ns)
     api.add_namespace(auth_ns)
 
-    @app.shell_context_processor
-    def make_shell_context():
-        return {'db': db,
-                'Recipe': Blogs,
-                'user' : User
-                }
+    # @app.shell_context_processor
+    # def make_shell_context():
+    #     return {'db': db,
+    #             'Recipe': Blogs,
+    #             'user' : User
+    #             }
 
     return app
