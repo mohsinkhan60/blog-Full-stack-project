@@ -1,35 +1,38 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Menu, X, ChevronDown, Search, Bell, User } from "lucide-react"
+import { Bell, ChevronDown, Menu, Search, User, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { UserDropdown } from "./Home/User";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Toggle mobile menu
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white/50 backdrop-blur-sm"
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-md"
+          : "bg-white/50 backdrop-blur-sm"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,13 +64,22 @@ const Navbar = () => {
                 <ChevronDown className="ml-1 h-4 w-4" />
               </button>
               <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                >
                   Product 1
                 </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                >
                   Product 2
                 </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600">
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                >
                   Product 3
                 </a>
               </div>
@@ -104,15 +116,20 @@ const Navbar = () => {
               <Bell className="h-5 w-5" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </button>
-            <button className="flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 text-purple-600 hover:bg-purple-200 transition-colors duration-200">
-              <User className="h-4 w-4" />
-            </button>
+            <UserDropdown />
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <button onClick={toggleMenu} className="text-gray-500 hover:text-purple-600 focus:outline-none">
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <button
+              onClick={toggleMenu}
+              className="text-gray-500 hover:text-purple-600 focus:outline-none"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -135,19 +152,22 @@ const Navbar = () => {
             <button
               className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 flex justify-between items-center"
               onClick={(e) => {
-                e.preventDefault()
-                const submenu = e.currentTarget.nextElementSibling
+                e.preventDefault();
+                const submenu = e.currentTarget.nextElementSibling;
                 if (submenu.style.maxHeight) {
-                  submenu.style.maxHeight = null
+                  submenu.style.maxHeight = null;
                 } else {
-                  submenu.style.maxHeight = submenu.scrollHeight + "px"
+                  submenu.style.maxHeight = submenu.scrollHeight + "px";
                 }
               }}
             >
               Products
               <ChevronDown className="h-4 w-4" />
             </button>
-            <div className="overflow-hidden max-h-0 transition-all duration-300" style={{ maxHeight: "0px" }}>
+            <div
+              className="overflow-hidden max-h-0 transition-all duration-300"
+              style={{ maxHeight: "0px" }}
+            >
               <a
                 href="#"
                 className="block pl-6 pr-3 py-2 text-base font-medium text-gray-500 hover:text-purple-600 hover:bg-purple-50"
@@ -194,8 +214,12 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="ml-3">
-                <div className="text-base font-medium text-gray-800">User Name</div>
-                <div className="text-sm font-medium text-gray-500">user@example.com</div>
+                <div className="text-base font-medium text-gray-800">
+                  User Name
+                </div>
+                <div className="text-sm font-medium text-gray-500">
+                  user@example.com
+                </div>
               </div>
               <div className="ml-auto flex space-x-3">
                 <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
@@ -210,7 +234,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
