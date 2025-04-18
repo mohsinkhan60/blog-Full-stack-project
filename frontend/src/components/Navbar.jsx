@@ -204,13 +204,13 @@ const Navbar = () => {
             href="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
           >
-            Contact
+            Logout
           </a>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-3">
               <div className="flex-shrink-0">
                 <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                  <User className="h-5 w-5" />
+                  <UserDropdown />
                 </div>
               </div>
               <div className="ml-3">
