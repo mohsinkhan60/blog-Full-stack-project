@@ -9,70 +9,23 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    agreeToTerms: false,
   })
 
-  const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     })
 
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      })
-    }
   }
 
-  const validateForm = () => {
-    const newErrors = {}
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
-    }
-
-    if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = "You must agree to the terms"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(formData)
 
-    if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log("Form submitted:", formData)
-      alert("Sign up successful!")
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        agreeToTerms: false,
-      })
-    }
   }
 
   return (
@@ -87,25 +40,17 @@ const Signup = () => {
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
+                Username
               </label>
               <input
                 id="name"
                 name="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Enter name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm flex items-center mt-1">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  {errors.name}
-                </p>
-              )}
             </div>
 
             <div>
@@ -119,16 +64,8 @@ const Signup = () => {
                 placeholder="john@example.com"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm flex items-center mt-1">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  {errors.email}
-                </p>
-              )}
             </div>
 
             <div>
@@ -139,42 +76,13 @@ const Signup = () => {
                 id="password"
                 name="password"
                 type="password"
+                placeholder="Enter Password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm flex items-center mt-1">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  {errors.password}
-                </p>
-              )}
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="terms"
-                name="agreeToTerms"
-                type="checkbox"
-                checked={formData.agreeToTerms}
-                onChange={handleChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="terms"
-                className={`ml-2 block text-sm ${errors.agreeToTerms ? "text-red-500" : "text-gray-700"}`}
-              >
-                I agree to the terms of service and privacy policy
-              </label>
-            </div>
-            {errors.agreeToTerms && (
-              <p className="text-red-500 text-sm flex items-center mt-1">
-                <AlertCircle className="h-4 w-4 mr-1" />
-                {errors.agreeToTerms}
-              </p>
-            )}
           </div>
 
           <button
