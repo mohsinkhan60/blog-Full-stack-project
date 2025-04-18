@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { User, Settings, LogOut, HelpCircle, Bell } from "lucide-react"
+import { logout } from "../../auth"
 
 export function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false)
@@ -68,7 +69,7 @@ export function UserDropdown() {
               Help & Support
             </a>
 
-            <div className="border-t border-gray-100">
+            <div onClick={() => {logout()}} className="border-t border-gray-100">
               <a
                 href="#"
                 className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"

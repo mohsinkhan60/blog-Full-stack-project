@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { login } from "../auth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const Login = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
 
   // Handle input changes
   const handleChange = (e) => {
@@ -22,7 +26,7 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("User Data:", formData);
+   //  console.log("User Data:", formData);
 
     const requestOptions = {
       method: "POST",
@@ -38,11 +42,9 @@ const Login = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data.access_token);
-        // Save the token to localStorage or context
-        localStorage.setItem("access_token", data.access_token);
-        // Redirect to the home page
-        window.location.href = "/";
+      //   console.log(data.access_token);
+        login("access_token", data.access_token);
+        navigate('/')
       })
       .catch((err) => {
         console.error(err);

@@ -3,10 +3,14 @@
 import { Bell, ChevronDown, Menu, Search, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserDropdown } from "./Home/User";
+import { logout, useAuth } from "../auth";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logged] = useAuth();
+  const navigate = useNavigate(); // Initialize navigate
 
   // Handle scroll effect
   useEffect(() => {
@@ -108,16 +112,33 @@ const Navbar = () => {
           </div>
 
           {/* Right side icons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
-              <Search className="h-5 w-5" />
-            </button>
-            <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200 relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-            </button>
-            <UserDropdown />
-          </div>
+          {logged ? (
+            <div className="hidden md:flex items-center space-x-4">
+              <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
+                <Search className="h-5 w-5" />
+              </button>
+              <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200 relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+              </button>
+              <UserDropdown />
+            </div>
+          ) : (
+            <div className="gap-2 flex">
+              <button
+                onClick={() => navigate("/signup")} // Use navigate for routing
+                className="px-5 py-2 border rounded-full hidden md:flex cursor-pointer hover:bg-purple-400 hover:text-white"
+              >
+                Sign up
+              </button>
+              <button
+                onClick={() => navigate("/login")} // Use navigate for routing
+                className="px-5 py-2 border rounded-full hidden md:flex cursor-pointer hover:bg-purple-400 hover:text-white"
+              >
+                Login
+              </button>
+            </div>
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -200,37 +221,24 @@ const Navbar = () => {
           >
             About
           </a>
-          <a
-            href="#"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
-          >
-            Logout
-          </a>
-          <div className="pt-4 pb-3 border-t border-gray-200">
-            <div className="flex items-center px-3">
-              <div className="flex-shrink-0">
-                <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                  <UserDropdown />
-                </div>
-              </div>
-              <div className="ml-3">
-                <div className="text-base font-medium text-gray-800">
-                  User Name
-                </div>
-                <div className="text-sm font-medium text-gray-500">
-                  user@example.com
-                </div>
-              </div>
-              <div className="ml-auto flex space-x-3">
-                <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
-                  <Bell className="h-5 w-5" />
-                </button>
-                <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
-                  <Search className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          </div>
+          {logged ? (
+            <a
+              onClick={() => logout()}
+              href="/login"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+            >
+              Logout
+            </a>
+          ) : (
+            <a
+              href="/signup"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+            >
+              Sign UP
+            </a>
+          )}
+
+          <div className="pt-4 pb-3 border-t border-gray-200"></div>
         </div>
       </div>
     </nav>
