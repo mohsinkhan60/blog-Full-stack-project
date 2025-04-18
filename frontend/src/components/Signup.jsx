@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Signup = () => {
 
   const [serverResponse, setServerResponse] = useState("");
   const [showResponse, setShowResponse] = useState(false);
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,11 +47,12 @@ const Signup = () => {
      .then((data) => {
        console.log(data);
        setServerResponse(data.message || "Signup successful!");
+       navigate('/login')
        setShowResponse(true);
      })
      .catch((err) => {
        console.error(err);
-       setServerResponse("An error occurred. Please try again.");
+       setServerResponse("This Email already exist");
        setShowResponse(true);
      });
   };
