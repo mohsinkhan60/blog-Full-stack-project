@@ -1,45 +1,82 @@
+"use client";
 
-"use client"
-
-import { useState } from "react"
-import { AlertCircle } from "lucide-react"
+import { useState } from "react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-  })
+  });
 
+  const [serverResponse, setServerResponse] = useState("");
+  const [showResponse, setShowResponse] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    })
-
-  }
-
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(formData)
+    e.preventDefault();
 
-  }
+    const body = {
+      username: formData.name, // Corrected field name
+      email: formData.email,
+      password: formData.password,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    };
+
+   fetch("http://localhost:5000/auth/signup", requestOptions)
+     .then((res) => {
+       if (!res.ok) {
+         throw new Error(`HTTP error! status: ${res.status}`);
+       }
+       return res.json();
+     })
+     .then((data) => {
+       console.log(data);
+       setServerResponse(data.message || "Signup successful!");
+       setShowResponse(true);
+     })
+     .catch((err) => {
+       console.error(err);
+       setServerResponse("An error occurred. Please try again.");
+       setShowResponse(true);
+     });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white rounded-lg shadow-md w-full max-w-md p-6">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Create an account</h2>
-          <p className="text-gray-600 mt-1">Enter your information to create your account</p>
+          <p className="text-gray-600 mt-1">
+            Enter your information to create your account
+          </p>
         </div>
+
+        {showResponse && (
+          <div className="mb-4 text-center text-sm text-green-600">
+            {serverResponse}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Username
               </label>
               <input
@@ -54,7 +91,10 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email
               </label>
               <input
@@ -69,7 +109,10 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -79,10 +122,9 @@ const Signup = () => {
                 placeholder="Enter Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
           </div>
 
           <button
@@ -101,7 +143,7 @@ const Signup = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;

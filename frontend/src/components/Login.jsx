@@ -8,6 +8,8 @@ const Login = () => {
     password: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +23,31 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("User Data:", formData);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData), // Use formData instead of undefined data
+    };
+
+    fetch("http://localhost:5000/auth/login", requestOptions) // Ensure the correct backend URL
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Invalid username or password");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data.access_token);
+        // Save the token to localStorage or context
+        localStorage.setItem("access_token", data.access_token);
+        // Redirect to the home page
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorMessage("Invalid username or password");
+      });
   };
 
   return (
@@ -29,6 +56,12 @@ const Login = () => {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Login</h2>
         </div>
+
+        {errorMessage && (
+          <div className="mb-4 text-center text-sm text-red-600">
+            {errorMessage}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div>
