@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { UserDropdown } from "./Home/User";
 import { logout, useAuth } from "../auth";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const user = useSelector((state) => state.user.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [logged] = useAuth();
@@ -48,7 +50,7 @@ const Navbar = () => {
                 M
               </div>
               <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                Mohsin khan
+                {user.username}
               </span>
             </a>
           </div>

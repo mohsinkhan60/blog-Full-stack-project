@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { login } from "../auth";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,7 +15,6 @@ const Login = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
 
   // Handle input changes
   const handleChange = (e) => {
@@ -26,7 +28,7 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-   //  console.log("User Data:", formData);
+    // console.log("User Data:", formData);
 
     const requestOptions = {
       method: "POST",
@@ -42,9 +44,10 @@ const Login = () => {
         return res.json();
       })
       .then((data) => {
-      //   console.log(data.access_token);
+        // console.log(data.data.username);
+        dispatch(setUser(data.data));
         login("access_token", data.access_token);
-        navigate('/')
+        navigate("/");
       })
       .catch((err) => {
         console.error(err);

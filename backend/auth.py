@@ -44,7 +44,10 @@ class SignupResource(Resource):
             password=generate_password_hash(data.get('password'))
         )
         new_user.save()
-        return make_response(jsonify({"message": "User created successfully"}), 200)
+        return make_response(jsonify({"message": "User created successfully", data:{
+            "username": new_user.username,
+            "email": new_user.email,
+        }}), 200)
 
 # Login
 @auth_ns.route("/login")
@@ -64,7 +67,11 @@ class LoginResource(Resource):
                 refresh_token = create_refresh_token(identity=user.email)
                 return {
                     "access_token": access_token,
-                    "refresh_token": refresh_token
+                    "refresh_token": refresh_token,
+                    "data":{
+                        "username": user.username,
+                        "email": user.email,
+                    }
                 }, 200
 
         return {"message": "Invalid credentials"}, 401
