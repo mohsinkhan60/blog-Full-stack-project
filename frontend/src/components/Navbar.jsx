@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../auth";
 import { logoutUser } from "../redux/userSlice";
 import { UserDropdown } from "./Home/User";
+import { FaPlaneUp } from "react-icons/fa6";
 
 const Navbar = () => {
   const user = useSelector((state) => state.user?.user || null);
@@ -54,7 +55,7 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
             <a href="#" className="flex items-center">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold">
-                M
+              <FaPlaneUp />
               </div>
               <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
                 {user?.username ? `Welcome ${user.username}` : "Welcome to our web-site"}
