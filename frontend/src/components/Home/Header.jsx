@@ -1,6 +1,15 @@
+import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 
 const Header = () => {
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+      fetch('http://localhost:5000/blog/blogs')
+          .then(response => response.json())
+          .then(data => setUserData(data));
+  }, []);
+  console.log(userData)
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -18,17 +27,16 @@ const Header = () => {
 
         {/* Content placeholders */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {[1, 2, 3].map((item) => (
-            <div key={item} className="bg-white p-6 rounded-lg shadow-md">
+          {userData.map((item) => (
+            <div key={item.id} className="bg-white p-6 rounded-lg shadow-md">
               <div className="h-40 bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4"></div>
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                Feature Section {item}
+                {item.title}
               </h2>
               <p className="text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              {item.description}
               </p>
-              <p>Author</p>
+              <p>{item.author}</p>
             </div>
           ))}
         </div>
