@@ -1,33 +1,42 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { User, Settings, LogOut, HelpCircle, Bell } from "lucide-react"
-import { logout } from "../../auth"
+import { useState, useEffect } from "react";
+import { User, Settings, LogOut, HelpCircle, Bell } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../auth";
+import { logoutUser } from "../../redux/userSlice";
 
 export function UserDropdown() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const user = useSelector((state) => state.user.user)
+  const dispatch = useDispatch();
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Get the dropdown element by its data attribute
-      const dropdown = document.querySelector('[data-dropdown="user-menu"]')
+      const dropdown = document.querySelector('[data-dropdown="user-menu"]');
 
       // Check if the click was outside the dropdown
       if (dropdown && !dropdown.contains(event.target)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const logoutt = () => {
+    logout();
+    dispatch(logoutUser())
+  };
 
   return (
     <div className="relative" data-dropdown="user-menu">
@@ -49,27 +58,41 @@ export function UserDropdown() {
           <div className="py-1" role="menu" aria-orientation="vertical">
             {/* User Info */}
             <div className="px-4 py-3 border-b border-gray-100">
-              <p className="text-sm font-medium text-gray-900">Mohsin Khan</p>
-              <p className="text-xs text-gray-500 truncate">mohsinkhan.contact0@gmail.com</p>
+              <p className="text-sm font-medium text-gray-900">{user.username}</p>
+              <p className="text-xs text-gray-500 truncate">
+                {user.email}
+              </p>
             </div>
 
             {/* Menu Items */}
-            <a href="#" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+            <a
+              href="#"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+            >
               <Settings className="mr-3 h-4 w-4 text-gray-500" />
               Account Settings
             </a>
 
-            <a href="#" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+            <a
+              href="#"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+            >
               <Bell className="mr-3 h-4 w-4 text-gray-500" />
               Notifications
             </a>
 
-            <a href="#" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+            <a
+              href="#"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+            >
               <HelpCircle className="mr-3 h-4 w-4 text-gray-500" />
               Help & Support
             </a>
 
-            <div onClick={() => {logout()}} className="border-t border-gray-100">
+            <div onClick={() => logoutt()} className="border-t border-gray-100">
               <a
                 href="#"
                 className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -83,5 +106,5 @@ export function UserDropdown() {
         </div>
       )}
     </div>
-  )
+  );
 }

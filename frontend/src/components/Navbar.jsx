@@ -1,14 +1,17 @@
 "use client";
 
-import { Bell, ChevronDown, Menu, Search, User, X } from "lucide-react";
+import { Bell, ChevronDown, Menu, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { UserDropdown } from "./Home/User";
-import { logout, useAuth } from "../auth";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useAuth } from "../auth";
+import { logoutUser } from "../redux/userSlice";
+import { UserDropdown } from "./Home/User";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user?.user || null);
+  const dispatch = useDispatch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [logged] = useAuth();
@@ -32,6 +35,10 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const logoutt = () => {
+    navigate("/login")
+    dispatch(logoutUser())
+  }
 
   return (
     <nav
@@ -50,7 +57,7 @@ const Navbar = () => {
                 M
               </div>
               <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                {user.username}
+                {user?.username ? `Welcome ${user.username}` : "Welcome to our web-site"}
               </span>
             </a>
           </div>
@@ -225,7 +232,7 @@ const Navbar = () => {
           </a>
           {logged ? (
             <a
-              onClick={() => logout()}
+              onClick={() => logoutt()  }
               href="/login"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
             >
