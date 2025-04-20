@@ -17,7 +17,7 @@ def create_app(config):
     CORS(app)
 
     db.init_app(app)
-    # migrate = Migrate(app, db)
+    migrate = Migrate(app, db)
     JWTManager(app)
 
     api = Api(app, doc='/docs')
