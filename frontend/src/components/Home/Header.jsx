@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { UserDrop } from "../../pages/UI-pages/menu";
 import Navbar from "../Navbar";
 
 const Header = () => {
@@ -26,9 +27,12 @@ const Header = () => {
         </div>
 
         {/* Content placeholders */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 relative md:grid-cols-3 gap-8 mb-20">
           {userData.map((item) => (
             <div key={item.id} className="bg-white p-6 rounded-lg shadow-md">
+              <div className="cursor-pointer">
+                <UserDrop />
+              </div>
               <div className="h-40 bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4"></div>
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 {item.title}
