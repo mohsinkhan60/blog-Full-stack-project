@@ -6,11 +6,11 @@ const Header = () => {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
-      fetch('http://localhost:5000/blog/blogs')
-          .then(response => response.json())
-          .then(data => setUserData(data));
+    fetch("http://localhost:5000/blog/blogs")
+      .then((response) => response.json())
+      .then((data) => setUserData(data));
   }, []);
-  console.log(userData)
+  // console.log(userData)
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -33,15 +33,27 @@ const Header = () => {
               <div className="cursor-pointer">
                 <UserDrop />
               </div>
-              <div className="h-40 bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4">
-                <img src={item.image} alt="" />
-              </div>
+              {item.image ? (
+                <div>
+                  <img
+                    src={item.image}
+                    className="h-40 w-full bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4"
+                    alt=""
+                  />
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src="https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg"
+                    className="h-40 rounded-md mb-4"
+                    alt=""
+                  />
+                </div>
+              )}
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 {item.title}
               </h2>
-              <p className="text-gray-600">
-              {item.description}
-              </p>
+              <p className="text-gray-600">{item.description}</p>
               <p>{item.author}</p>
             </div>
           ))}
