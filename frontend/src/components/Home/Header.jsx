@@ -10,7 +10,7 @@ const Header = () => {
           .then(response => response.json())
           .then(data => setUserData(data));
   }, []);
-  // console.log(userData)
+  console.log(userData)
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -33,7 +33,9 @@ const Header = () => {
               <div className="cursor-pointer">
                 <UserDrop />
               </div>
-              <div className="h-40 bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4"></div>
+              <div className="h-40 bg-gradient-to-r from-purple-100 to-pink-100 rounded-md mb-4">
+                <img src={item.image} alt="" />
+              </div>
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
                 {item.title}
               </h2>

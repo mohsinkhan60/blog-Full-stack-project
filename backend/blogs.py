@@ -14,6 +14,7 @@ blogs_model = blog_ns.model(
         "title": fields.String(),
         "description": fields.String(),
         "author": fields.String(),
+        "image": fields.String(),
     },
 )
 @blog_ns.route("/hello")
@@ -38,6 +39,7 @@ class BlogsResource(Resource):
             title=data.get("title"),
             description=data.get("description"),
             author=data.get("author"),
+            image=data.get("image"),
         )
         new_blog.save()
         return new_blog, 201
@@ -59,6 +61,7 @@ class BlogResource(Resource):
             title=data.get("title"),
             description=data.get("description"),
             author=data.get("author"),
+            image=data.get("image"),
         )
         return blog
 

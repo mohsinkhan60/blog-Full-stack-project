@@ -6,7 +6,7 @@ class Blogs(db.Model):
       title = db.Column(db.String(100), nullable=False)
       description = db.Column(db.Text, nullable=False)
       author = db.Column(db.String(50), nullable=False)
-
+      image = db.Column(db.String(500), nullable=True)
    
       def __repr__(self):
          return f'<Blog {self.title}>'
@@ -19,10 +19,11 @@ class Blogs(db.Model):
          db.session.delete(self)
          db.session.commit()
 
-      def update(self, title, description, author):
+      def update(self, title, description, author, image):
          self.title = title
          self.description = description
          self.author = author
+         self.image = image
          db.session.commit()
 
 class User(db.Model):
