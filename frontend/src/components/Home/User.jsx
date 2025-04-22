@@ -5,6 +5,8 @@ import { User, Settings, LogOut, HelpCircle, Bell } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../auth";
 import { logoutUser } from "../../redux/userSlice";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
+import PopupForm from "../../pages/UI-pages/popup-form";
 
 export function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,6 +67,14 @@ export function UserDropdown() {
             </div>
 
             {/* Menu Items */}
+            <a
+              href="#"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+            >
+              <MdOutlineCreateNewFolder className="mr-3 h-4 w-4 text-gray-500" />
+              Create Blogs
+            </a>
             <a
               href="#"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

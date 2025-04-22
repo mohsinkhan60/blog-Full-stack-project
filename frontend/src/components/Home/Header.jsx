@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { UserDrop } from "../../pages/UI-pages/menu";
 import Navbar from "../Navbar";
+import PopupForm from "../../pages/UI-pages/popup-form";
 
 const Header = () => {
   const [userData, setUserData] = useState([]);
@@ -15,6 +16,9 @@ const Header = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <main className="pt-20 px-4 max-w-7xl mx-auto">
+        <div>
+          <PopupForm />
+        </div>
         <div className="py-20 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Welcome to Our Website
