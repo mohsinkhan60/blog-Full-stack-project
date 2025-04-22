@@ -6,22 +6,22 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 export default function PopupForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "general",
-    message: "",
+    image: "", // Updated field name
+    title: "",
+    description: "",
+    author: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const openPopup = () => setIsOpen(true);
+
   const closePopup = () => {
     if (!isSubmitting) {
       setIsOpen(false);
-      // Reset form after a short delay to avoid seeing the reset while closing
       setTimeout(() => {
-        setFormData({ name: "", email: "", subject: "general", message: "" });
+        setFormData({ image: "", title: "", description: "", author: "" });
         setErrors({});
         setIsSubmitted(false);
       }, 300);
@@ -35,7 +35,6 @@ export default function PopupForm() {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -47,40 +46,71 @@ export default function PopupForm() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+    if (!formData.image.trim()) {
+      newErrors.image = "Image URL is required";
+    } else if (
+      !/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/.test(formData.image)
+    ) {
+      newErrors.image = "Invalid image URL";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required";
     }
 
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+    }
+
+    if (!formData.author.trim()) {
+      newErrors.author = "Author is required";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       setIsSubmitting(true);
 
-      // Simulate form submission
-      setTimeout(() => {
-        setIsSubmitting(false);
+      try {
+        const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        };
+
+        console.log("Request Options:", requestOptions);
+
+        const response = await fetch(
+          "http://localhost:5000/blog/blogs",
+          requestOptions
+        );
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Error Response:", errorData);
+          throw new Error(`Failed to create blog: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Blog created:", data);
+
         setIsSubmitted(true);
 
-        // Close popup after showing success message
         setTimeout(() => {
           closePopup();
         }, 2000);
-      }, 1500);
+      } catch (error) {
+        console.error("Form submission failed:", error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -90,11 +120,10 @@ export default function PopupForm() {
         onClick={openPopup}
         className="rounded-md bg-green-500 flex items-center justify-center px-4 py-2 font-medium text-white transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
       >
-        <MdOutlineCreateNewFolder className="mr-3 h-4 w-4 " />
+        <MdOutlineCreateNewFolder className="mr-3 h-4 w-4" />
         Create new Blog
       </button>
 
-      {/* Backdrop */}
       {isOpen && (
         <div className="fixed inset-0 z-10 flex items-center justify-center">
           <div
@@ -102,10 +131,9 @@ export default function PopupForm() {
             onClick={!isSubmitting ? closePopup : undefined}
           />
 
-          {/* Popup Content */}
           <div className="relative z-20 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-gray-800">Contact Us</h2>
+              <h2 className="text-xl font-bold text-gray-800">Create Blog</h2>
               {!isSubmitting && (
                 <button
                   onClick={closePopup}
@@ -133,103 +161,112 @@ export default function PopupForm() {
             <div className="mb-6">
               {isSubmitted ? (
                 <div className="rounded-md bg-green-50 p-4 text-center">
-                  <p className="text-green-800">
-                    Thank you for your submission!
-                  </p>
+                  <p className="text-green-800">Blog created successfully!</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
                     <label
-                      htmlFor="name"
+                      htmlFor="image"
                       className="mb-1 block text-sm font-medium text-gray-700"
                     >
-                      Name
+                      Image URL
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="image"
+                      name="image"
+                      value={formData.image}
+                      placeholder="Enter image URL"
                       onChange={handleChange}
                       disabled={isSubmitting}
                       className={`w-full rounded-md border ${
-                        errors.name ? "border-red-500" : "border-gray-300"
+                        errors.image ? "border-red-500" : "border-gray-300"
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
-                    {errors.name && (
-                      <p className="mt-1 text-xs text-red-500">{errors.name}</p>
-                    )}
-                  </div>
-
-                  <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="mb-1 block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      disabled={isSubmitting}
-                      className={`w-full rounded-md border ${
-                        errors.email ? "border-red-500" : "border-gray-300"
-                      } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
-                    />
-                    {errors.email && (
+                    {errors.image && (
                       <p className="mt-1 text-xs text-red-500">
-                        {errors.email}
+                        {errors.image}
                       </p>
                     )}
                   </div>
 
                   <div className="mb-4">
                     <label
-                      htmlFor="subject"
+                      htmlFor="title"
                       className="mb-1 block text-sm font-medium text-gray-700"
                     >
-                      Subject
+                      Title
                     </label>
-                    <select
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
+                    <input
+                      type="text"
+                      id="title"
+                      name="title"
+                      placeholder="Enter title"
+                      value={formData.title}
                       onChange={handleChange}
                       disabled={isSubmitting}
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    >
-                      <option value="general">General Inquiry</option>
-                      <option value="support">Technical Support</option>
-                      <option value="billing">Billing Question</option>
-                      <option value="feedback">Feedback</option>
-                    </select>
+                      className={`w-full rounded-md border ${
+                        errors.title ? "border-red-500" : "border-gray-300"
+                      } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
+                    />
+                    {errors.title && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.title}
+                      </p>
+                    )}
                   </div>
 
                   <div className="mb-4">
                     <label
-                      htmlFor="message"
+                      htmlFor="description"
                       className="mb-1 block text-sm font-medium text-gray-700"
                     >
-                      Message
+                      Description
                     </label>
                     <textarea
-                      id="message"
-                      name="message"
+                      id="description"
+                      name="description"
                       rows="4"
-                      value={formData.message}
+                      placeholder="Enter description"
+                      value={formData.description}
                       onChange={handleChange}
                       disabled={isSubmitting}
                       className={`w-full rounded-md border ${
-                        errors.message ? "border-red-500" : "border-gray-300"
+                        errors.description
+                          ? "border-red-500"
+                          : "border-gray-300"
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     ></textarea>
-                    {errors.message && (
+                    {errors.description && (
                       <p className="mt-1 text-xs text-red-500">
-                        {errors.message}
+                        {errors.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="author"
+                      className="mb-1 block text-sm font-medium text-gray-700"
+                    >
+                      Author
+                    </label>
+                    <input
+                      type="text"
+                      id="author"
+                      name="author"
+                      placeholder="Enter author"
+                      value={formData.author}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      className={`w-full rounded-md border ${
+                        errors.author ? "border-red-500" : "border-gray-300"
+                      } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
+                    />
+                    {errors.author && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {errors.author}
                       </p>
                     )}
                   </div>
@@ -248,32 +285,7 @@ export default function PopupForm() {
                       disabled={isSubmitting}
                       className="rounded-md bg-blue-500 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                      {isSubmitting ? (
-                        <span className="flex items-center">
-                          <svg
-                            className="mr-2 h-4 w-4 animate-spin"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              fill="none"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Submitting...
-                        </span>
-                      ) : (
-                        "Submit"
-                      )}
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
                   </div>
                 </form>
