@@ -71,6 +71,9 @@ export default function PopupForm() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,6 +107,7 @@ export default function PopupForm() {
         console.log("Blog created:", data);
 
         setIsSubmitted(true);
+        refreshPage();
 
         setTimeout(() => {
           closePopup();
