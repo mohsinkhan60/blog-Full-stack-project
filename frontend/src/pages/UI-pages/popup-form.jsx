@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 export default function PopupForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function PopupForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const tokenn = useSelector((state) => state.user.user)
 
   const openPopup = () => setIsOpen(true);
 
@@ -76,7 +78,7 @@ export default function PopupForm() {
       setIsSubmitting(true);
 
       try {
-        const token = JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_KEY"));
+        const token = tokenn.access_token;
         const requestOptions = {
           method: "POST",
           headers: {

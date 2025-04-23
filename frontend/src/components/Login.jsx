@@ -48,10 +48,10 @@ const Login = () => {
         dispatch(setUser(data));
         // console.log(data.access_token)
         login("access_token", data.access_token);
-        localStorage.setItem(
-          "REACT_TOKEN_AUTH_KEY",
-          JSON.stringify(data?.access_token)
-        );
+        // localStorage.setItem(
+        //   "REACT_TOKEN_AUTH_KEY",
+        //   JSON.stringify(data?.access_token)
+        // );
         navigate("/");
       })
       .catch((err) => {
