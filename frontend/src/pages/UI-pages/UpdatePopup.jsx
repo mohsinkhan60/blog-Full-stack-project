@@ -7,7 +7,7 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
   const [isVisible, setIsVisible] = useState(false);
   const [formValues, setFormValues] = useState({
     title: initialValues.title || "",
-    img_URL: initialValues.image || "",
+    image: initialValues.image || "",
     description: initialValues.description || "",
     author: initialValues.author || "",
   });
@@ -18,7 +18,7 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
       setIsVisible(true);
       setFormValues({
         title: initialValues.title || "",
-        img_URL: initialValues.image || "",
+        image: initialValues.image || "",
         description: initialValues.description || "",
         author: initialValues.author || "",
       });
@@ -96,8 +96,8 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
           <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Image URL</label>
           <input
             type="text"
-            name="img_URL"
-            value={formValues.img_URL}
+            name="image"
+            value={formValues.image}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
           />
