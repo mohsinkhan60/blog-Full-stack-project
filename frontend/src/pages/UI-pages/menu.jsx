@@ -30,7 +30,7 @@ export function UserDrop() {
       {/* Trigger Button */}
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center justify-center w-7 h-7 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition"
+        className="flex items-center mb-3 justify-center w-7 h-7 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition"
       >
         <HiDotsHorizontal />
       </button>
