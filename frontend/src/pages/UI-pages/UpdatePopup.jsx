@@ -3,20 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Pencil } from "lucide-react";
 
-export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValue = "" }) {
+export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues = {} }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [inputValue, setInputValue] = useState(initialValue);
+  const [formValues, setFormValues] = useState({
+    title: initialValues.title || "",
+    img_URL: initialValues.image || "",
+    description: initialValues.description || "",
+    author: initialValues.author || "",
+  });
   const popupRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-      setInputValue(initialValue);
+      setFormValues({
+        title: initialValues.title || "",
+        img_URL: initialValues.image || "",
+        description: initialValues.description || "",
+        author: initialValues.author || "",
+      });
     } else {
       const timer = setTimeout(() => setIsVisible(false), 200);
       return () => clearTimeout(timer);
     }
-  }, [isOpen, initialValue]);
+  }, [isOpen]); // Removed `initialValues` from dependency array to prevent infinite loop
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -36,6 +46,14 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValue = 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -47,7 +65,7 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValue = 
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center gap-2">
             <Pencil className="text-blue-500 h-5 w-5" />
-            <h2 className="text-lg font-semibold text-gray-800">Update Data</h2>
+            <h2 className="text-lg font-semibold text-gray-800">Update Blog</h2>
           </div>
           <button
             onClick={onClose}
@@ -60,19 +78,50 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValue = 
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(inputValue);
+            onSubmit(formValues);
             onClose();
           }}
           className="p-4"
         >
-          <label className="block mb-2 text-sm font-medium text-gray-700">Name</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Title</label>
           <input
             type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            name="title"
+            value={formValues.title}
+            onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             required
           />
+
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Image URL</label>
+          <input
+            type="text"
+            name="img_URL"
+            value={formValues.img_URL}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+          />
+
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            name="description"
+            value={formValues.description}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            rows="4"
+            required
+          ></textarea>
+
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Author</label>
+          <input
+            type="text"
+            name="author"
+            value={formValues.author}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            required
+          />
+
           <div className="flex justify-end gap-2 mt-6 border-t pt-4 bg-gray-50 rounded-b-xl">
             <button
               type="button"

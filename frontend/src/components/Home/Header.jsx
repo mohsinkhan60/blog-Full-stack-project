@@ -9,7 +9,6 @@ const Header = () => {
   const [userData, setUserData] = useState([]); // State to store fetched blogs
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-  const [itemName, setItemName] = useState("");
   const [selectedId, setSelectedId] = useState(null); // State to store the selected item's ID
 
   const token = useSelector((state) => state.user.user); // Access token from Redux
@@ -47,49 +46,20 @@ const Header = () => {
         if (!response.ok) {
           throw new Error("Failed to delete the blog.");
         }
-        refreshPage()
+        refreshPage();
         return response.json();
       })
       .then(() => {
         // Remove the deleted blog from the state
-        setUserData((prevData) => prevData.filter((item) => item.id !== selectedId));
+        setUserData((prevData) =>
+          prevData.filter((item) => item.id !== selectedId)
+        );
         setSelectedId(null); // Clear the selected ID
         setShowDeletePopup(false);
       })
       .catch((error) => {
         console.error("Error deleting blog:", error);
         setShowDeletePopup(false);
-      });
-  };
-
-  // Handle Update
-  const handleUpdate = (updatedName) => {
-    if (!selectedId) {
-      alert("No item selected for update.");
-      return;
-    }
-
-    fetch(`http://localhost:5000/blog/blogs/${selectedId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.access_token}`, // Use the token directly
-      },
-      body: JSON.stringify({ title: updatedName }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to update the blog.");
-        }
-        return response.json();
-      })
-      .then(() => {
-        fetchBlogs(); // Refresh the list of blogs
-        setShowUpdatePopup(false);
-      })
-      .catch((error) => {
-        console.error("Error updating blog:", error);
-        setShowUpdatePopup(false);
       });
   };
 
@@ -104,7 +74,8 @@ const Header = () => {
             Welcome to Our Website
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            This is a beautiful responsive navbar built with React and Tailwind CSS.
+            This is a beautiful responsive navbar built with React and Tailwind
+            CSS.
           </p>
         </div>
 
@@ -114,8 +85,8 @@ const Header = () => {
               <div className="flex justify-end mb-3 space-x-2">
                 <button
                   onClick={() => {
+
                     setSelectedId(item.id);
-                    setItemName(item.title);
                     setShowUpdatePopup(true);
                   }}
                   className="text-sm text-white hover:text-blue-600 bg-blue-500 hover:bg-blue-200 px-3 py-1 rounded transition"
@@ -159,8 +130,29 @@ const Header = () => {
         <UpdatePopup
           isOpen={showUpdatePopup}
           onClose={() => setShowUpdatePopup(false)}
-          onSubmit={handleUpdate}
-          initialValue={itemName}
+          onSubmit={(updatedData) => {
+            console.log("Updated Data:", updatedData);
+            fetch(`http://localhost:5000/blog/blogs/${selectedId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.access_token}`,
+              },
+              body: JSON.stringify(updatedData),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Failed to update the blog.");
+                }
+                return response.json();
+              })
+              .then(() => {
+                fetchBlogs(); // Refresh the list of blogs
+                setShowUpdatePopup(false);
+              })
+              .catch((error) => console.error("Error updating blog:", error));
+          }}
+          initialValues={userData.find((item) => item.id === selectedId) || {}}
         />
       </main>
     </div>
