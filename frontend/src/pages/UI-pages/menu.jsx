@@ -1,58 +1,84 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { HiDotsHorizontal } from "react-icons/hi";
+import DeletePopup from "./delete-popup";
+import UpdatePopup from "./UpdatePopup";
 
 export function UserDrop() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
+  const [itemName, setItemName] = useState("Sample Item");
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const handleDelete = () => {
+    alert("Deleted: " + itemName);
+    setShowDeletePopup(false);
+    setDropdownOpen(false);
   };
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Get the dropdown element by its data attribute
-      const dropdown = document.querySelector('[data-dropdown="user-menu"]');
-
-      // Check if the click was outside the dropdown
-      if (dropdown && !dropdown.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleUpdate = (updatedName) => {
+    setItemName(updatedName);
+    alert("Updated to: " + updatedName);
+    setShowUpdatePopup(false);
+    setDropdownOpen(false);
+  };
 
   return (
     <div className="relative" data-dropdown="user-menu">
-      {/* User Avatar Button */}
+      {/* Trigger Button */}
       <button
-        onClick={toggleDropdown}
-        className="flex items-center justify-center w-7 h-7 mb-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
-        aria-expanded={isOpen}
-        aria-haspopup="true"
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center justify-center w-7 h-7 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition"
       >
         <HiDotsHorizontal />
       </button>
 
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute p-3 rounded-md shadow-lg bg-gray-200 ring-opacity-5 focus:outline-none z-10">
-          <div className="flex flex-col gap-2">
-            <button className="bg-red-500 p-1 px-3 rounded-full text-white">
-              Delete
+      {/* Dropdown */}
+      {dropdownOpen && (
+        <div className="absolute mt-2 right-0 w-40 rounded-xl shadow-lg bg-white border z-20">
+          {/* Close Button */}
+          <div className="flex justify-end px-2 pt-2">
+            <button
+              onClick={() => setDropdownOpen(false)}
+              className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1 rounded-full transition"
+            >
+              <IoCloseSharp className="w-5 h-5" />
             </button>
-            <button className="bg-green-500 p-1 px-3 rounded-full text-white">
-              update
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col px-2 pb-2">
+            <button
+              onClick={() => setShowUpdatePopup(true)}
+              className="text-left text-sm text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg transition"
+            >
+              Update
+            </button>
+            <button
+              onClick={() => setShowDeletePopup(true)}
+              className="text-left text-sm text-red-600 hover:bg-red-50 px-3 py-2 rounded-lg transition"
+            >
+              Delete
             </button>
           </div>
         </div>
       )}
+
+      {/* Popups */}
+      <DeletePopup
+        isOpen={showDeletePopup}
+        onClose={() => setShowDeletePopup(false)}
+        onConfirm={handleDelete}
+      />
+
+      <UpdatePopup
+        isOpen={showUpdatePopup}
+        onClose={() => setShowUpdatePopup(false)}
+        onSubmit={handleUpdate}
+        initialValue={itemName}
+      />
     </div>
   );
 }
