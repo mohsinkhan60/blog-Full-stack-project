@@ -5,6 +5,7 @@ import { login } from "../auth";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -52,11 +53,17 @@ const Login = () => {
         //   "REACT_TOKEN_AUTH_KEY",
         //   JSON.stringify(data?.access_token)
         // );
+        toast.success("Login Successfully", {
+          position: "top-right"
+        });
         navigate("/");
       })
       .catch((err) => {
         console.error(err);
         setErrorMessage("Invalid username or password");
+        toast.error("Login Failed. Please check your credentials.", {
+          position: "top-right"
+        });
       });
   };
 
