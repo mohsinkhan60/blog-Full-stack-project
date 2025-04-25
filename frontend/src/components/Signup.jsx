@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +11,7 @@ const Signup = () => {
     password: "",
   });
 
-  const [serverResponse, setServerResponse] = useState("");
-  const [showResponse, setShowResponse] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +23,14 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate form fields
+    if (!formData.name || !formData.email || !formData.password) {
+      toast.error("All fields are required!", {
+        position: "top-right",
+      });
+      return;
+    }
 
     const body = {
       username: formData.name, // Corrected field name
@@ -37,24 +44,26 @@ const Signup = () => {
       body: JSON.stringify(body),
     };
 
-   fetch("http://localhost:5000/auth/signup", requestOptions)
-     .then((res) => {
-       if (!res.ok) {
-         throw new Error(`HTTP error! status: ${res.status}`);
-       }
-       return res.json();
-     })
-     .then((data) => {
-       console.log(data);
-       setServerResponse(data.message || "Signup successful!");
-       navigate('/login')
-       setShowResponse(true);
-     })
-     .catch((err) => {
-       console.error(err);
-       setServerResponse("This Email already exist");
-       setShowResponse(true);
-     });
+    fetch("http://localhost:5000/auth/signup", requestOptions)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        toast.success("Your account has been created. Please log in.", {
+          position: "top-right",
+        });
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Email already exists. Please try another email.", {
+          position: "top-right",
+        });
+      });
   };
 
   return (
@@ -66,12 +75,6 @@ const Signup = () => {
             Enter your information to create your account
           </p>
         </div>
-
-        {showResponse && (
-          <div className="mb-4 text-center text-sm text-green-600">
-            {serverResponse}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">

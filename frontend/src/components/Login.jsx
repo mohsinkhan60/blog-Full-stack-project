@@ -29,7 +29,14 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("User Data:", formData);
+
+    // Validate form fields
+    if (!formData.email || !formData.password) {
+      toast.error("All fields are required!", {
+        position: "top-right",
+      });
+      return;
+    }
 
     const requestOptions = {
       method: "POST",
@@ -54,7 +61,7 @@ const Login = () => {
         //   JSON.stringify(data?.access_token)
         // );
         toast.success("Login Successfully", {
-          position: "top-right"
+          position: "top-right",
         });
         navigate("/");
       })
@@ -62,7 +69,7 @@ const Login = () => {
         console.error(err);
         setErrorMessage("Invalid username or password");
         toast.error("Login Failed. Please check your credentials.", {
-          position: "top-right"
+          position: "top-right",
         });
       });
   };

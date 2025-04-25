@@ -44,7 +44,7 @@ class SignupResource(Resource):
             password=generate_password_hash(data.get('password'))
         )
         new_user.save()
-        return make_response(jsonify({"message": "User created successfully", data:{
+        return make_response(jsonify({"message": "User created successfully", "data":{
             "username": new_user.username,
             "email": new_user.email,
         }}), 200)
