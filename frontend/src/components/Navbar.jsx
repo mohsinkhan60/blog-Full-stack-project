@@ -10,6 +10,7 @@ import { FaPlaneUp } from "react-icons/fa6";
 const Navbar = () => {
   const user = useSelector((state) => state.user?.user || null);
   const dispatch = useDispatch();
+  // console.log(user)
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,13 +52,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <a href="#" className="flex items-center">
+            <a href="/" className="flex items-center">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold">
                 <FaPlaneUp />
               </div>
               <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                {user?.username
-                  ? `Welcome ${user.username}`
+                {user?.data.username
+                  ? `Welcome ${user.data.username}`
                   : "Welcome to our web-site"}
               </span>
             </a>
@@ -66,7 +67,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
             <a
-              href="#"
+              href="/"
               className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative group"
             >
               Home
@@ -174,7 +175,7 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
           <a
-            href="#"
+            href="/"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50"
           >
             Home
