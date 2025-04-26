@@ -72,7 +72,11 @@ const Header = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <main className="pt-20 px-4 max-w-7xl mx-auto">
-        <PopupForm />
+        <PopupForm
+          onBlogCreated={(newBlog) =>
+            setUserData((prevData) => [...prevData, newBlog])
+          }
+        />
 
         <div className="py-20 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">

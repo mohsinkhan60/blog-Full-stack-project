@@ -5,7 +5,7 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-export default function PopupForm() {
+export default function PopupForm({ onBlogCreated }) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     image: "",
@@ -99,6 +99,9 @@ export default function PopupForm() {
           throw new Error(`Failed to create blog: ${response.statusText}`);
         }
 
+        const newBlog = await response.json(); // Get the newly created blog
+        onBlogCreated(newBlog); // Update the parent state with the new blog
+
         setIsSubmitted(true);
         toast.success("Blog created successfully!", {
           position: "top-right",
@@ -109,7 +112,7 @@ export default function PopupForm() {
         }, 2000);
       } catch (error) {
         console.error("Form submission failed:", error.message);
-        toast.error("Failed to create blog. Please try again.", {
+        toast.error("Failed to create blog. Please login again.", {
           position: "top-right",
         });
       } finally {
