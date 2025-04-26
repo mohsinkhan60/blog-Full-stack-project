@@ -139,7 +139,7 @@ const Header = () => {
           isOpen={showUpdatePopup}
           onClose={() => setShowUpdatePopup(false)}
           onSubmit={(updatedData) => {
-            console.log("Updated Data:", updatedData);
+            // console.log("Updated Data:", updatedData);
             fetch(`http://localhost:5000/blog/blogs/${selectedId}`, {
               method: "PUT",
               headers: {
@@ -154,11 +154,24 @@ const Header = () => {
                 }
                 return response.json();
               })
-              .then(() => {
-                fetchBlogs(); // Refresh the list of blogs
+              .then((updatedBlog) => {
+                // Update the blog in the state
+                setUserData((prevData) =>
+                  prevData.map((item) =>
+                    item.id === selectedId ? { ...item, ...updatedBlog } : item
+                  )
+                );
                 setShowUpdatePopup(false);
+                toast.success("Blog updated successfully!", {
+                  position: "top-right",
+                });
               })
-              .catch((error) => console.error("Error updating blog:", error));
+              .catch((error) => {
+                console.error("Error updating blog:", error);
+                toast.error("Failed to update the blog. Please try again.", {
+                  position: "top-right",
+                });
+              });
           }}
           initialValues={userData.find((item) => item.id === selectedId) || {}}
         />
