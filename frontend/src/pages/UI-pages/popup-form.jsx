@@ -100,11 +100,12 @@ export default function PopupForm() {
         if (!response.ok) {
           const errorData = await response.json();
           console.error("Error Response:", errorData);
+          
           throw new Error(`Failed to create blog: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        console.log("Blog created:", data);
+        // const data = await response.json();
+        // console.log("Blog created:", data);
 
         setIsSubmitted(true);
         refreshPage();
