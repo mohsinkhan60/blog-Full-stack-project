@@ -7,10 +7,11 @@ import { logout } from "../../auth";
 import { logoutUser } from "../../redux/userSlice";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import PopupForm from "../../pages/UI-pages/popup-form";
+import { toast } from "react-toastify";
 
 export function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const user = useSelector((state) => state.user.user)
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const toggleDropdown = () => {
@@ -37,7 +38,10 @@ export function UserDropdown() {
 
   const logoutt = () => {
     logout();
-    dispatch(logoutUser())
+    dispatch(logoutUser());
+    toast.success("Logout Successfully", {
+      position: "top-right",
+    });
   };
 
   return (
@@ -60,7 +64,9 @@ export function UserDropdown() {
           <div className="py-1" role="menu" aria-orientation="vertical">
             {/* User Info */}
             <div className="px-4 py-3 border-b border-gray-100">
-              <p className="text-sm font-medium text-gray-900">{user.data.username}</p>
+              <p className="text-sm font-medium text-gray-900">
+                {user.data.username}
+              </p>
               <p className="text-xs text-gray-500 truncate">
                 {user.data.email}
               </p>

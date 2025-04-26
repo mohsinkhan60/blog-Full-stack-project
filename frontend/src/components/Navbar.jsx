@@ -6,6 +6,7 @@ import { useAuth } from "../auth";
 import { logoutUser } from "../redux/userSlice";
 import { UserDropdown } from "./Home/User";
 import { FaPlaneUp } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const user = useSelector((state) => state.user?.user || null);
@@ -36,10 +37,12 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const logoutt = () => {
-    navigate("/login");
-    dispatch(logoutUser());
+    dispatch(logoutUser()); // Dispatch the logout action first
+    navigate("/login"); // Navigate to the login page
+    toast.success("Logout Successfully", {
+      position: "top-right",
+    });
   };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
