@@ -4,6 +4,7 @@ import PopupForm from "../../pages/UI-pages/popup-form";
 import UpdatePopup from "../../pages/UI-pages/UpdatePopup";
 import Navbar from "../Navbar";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [userData, setUserData] = useState([]); // State to store fetched blogs
@@ -12,9 +13,6 @@ const Header = () => {
   const [selectedId, setSelectedId] = useState(null); // State to store the selected item's ID
 
   const token = useSelector((state) => state.user.user); // Access token from Redux
-  function refreshPage() {
-    window.location.reload(false);
-  }
 
   // Fetch blogs from the API
   const fetchBlogs = () => {
@@ -31,7 +29,9 @@ const Header = () => {
   // Handle Delete
   const handleDelete = () => {
     if (!selectedId) {
-      alert("No item selected for deletion.");
+      toast.error("No item selected for deletion.", {
+        position: "top-right",
+      });
       return;
     }
 
@@ -46,8 +46,7 @@ const Header = () => {
         if (!response.ok) {
           throw new Error("Failed to delete the blog.");
         }
-        refreshPage();
-        return response.json();
+        return response.text(); // Use response.text() instead of response.json() for empty responses
       })
       .then(() => {
         // Remove the deleted blog from the state
@@ -56,10 +55,16 @@ const Header = () => {
         );
         setSelectedId(null); // Clear the selected ID
         setShowDeletePopup(false);
+        toast.success("Blog deleted successfully.", {
+          position: "top-right",
+        });
       })
       .catch((error) => {
         console.error("Error deleting blog:", error);
         setShowDeletePopup(false);
+        toast.error("Failed to delete the blog. Please try again.", {
+          position: "top-right",
+        });
       });
   };
 
@@ -85,7 +90,6 @@ const Header = () => {
               <div className="flex justify-end mb-3 space-x-2">
                 <button
                   onClick={() => {
-
                     setSelectedId(item.id);
                     setShowUpdatePopup(true);
                   }}

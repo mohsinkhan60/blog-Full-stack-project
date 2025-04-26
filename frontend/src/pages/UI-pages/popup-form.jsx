@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function PopupForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    image: "", // Updated field name
+    image: "",
     title: "",
     description: "",
     author: "",
@@ -15,7 +16,7 @@ export default function PopupForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const tokenn = useSelector((state) => state.user.user)
+  const tokenn = useSelector((state) => state.user.user);
 
   const openPopup = () => setIsOpen(true);
 
@@ -71,9 +72,6 @@ export default function PopupForm() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  function refreshPage() {
-    window.location.reload(false);
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +89,6 @@ export default function PopupForm() {
           body: JSON.stringify(formData),
         };
 
-        console.log("Request Options:", requestOptions);
-
         const response = await fetch(
           "http://localhost:5000/blog/blogs",
           requestOptions
@@ -100,24 +96,29 @@ export default function PopupForm() {
         if (!response.ok) {
           const errorData = await response.json();
           console.error("Error Response:", errorData);
-          
           throw new Error(`Failed to create blog: ${response.statusText}`);
         }
 
-        // const data = await response.json();
-        // console.log("Blog created:", data);
-
         setIsSubmitted(true);
-        refreshPage();
+        toast.success("Blog created successfully!", {
+          position: "top-right",
+        });
 
         setTimeout(() => {
           closePopup();
         }, 2000);
       } catch (error) {
         console.error("Form submission failed:", error.message);
+        toast.error("Failed to create blog. Please try again.", {
+          position: "top-right",
+        });
       } finally {
         setIsSubmitting(false);
       }
+    } else {
+      toast.error("Please fix the errors in the form.", {
+        position: "top-right",
+      });
     }
   };
 
@@ -192,9 +193,7 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.image && (
-                      <p className="text-xs text-red-500">
-                        {errors.image}
-                      </p>
+                      <p className="text-xs text-red-500">{errors.image}</p>
                     )}
                   </div>
 
@@ -218,9 +217,7 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.title && (
-                      <p className="text-xs text-red-500">
-                        {errors.title}
-                      </p>
+                      <p className="text-xs text-red-500">{errors.title}</p>
                     )}
                   </div>
 
@@ -272,9 +269,7 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.author && (
-                      <p className="text-xs text-red-500">
-                        {errors.author}
-                      </p>
+                      <p className="text-xs text-red-500">{errors.author}</p>
                     )}
                   </div>
 
