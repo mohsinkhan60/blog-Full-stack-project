@@ -137,7 +137,7 @@ export default function PopupForm() {
             onClick={!isSubmitting ? closePopup : undefined}
           />
 
-          <div className="relative z-20 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+          <div className="relative z-20 w-full max-w-[23rem] md:max-w-md rounded-lg bg-white p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-800">Create Blog</h2>
               {!isSubmitting && (
@@ -164,14 +164,14 @@ export default function PopupForm() {
               )}
             </div>
 
-            <div className="mb-6">
+            <div>
               {isSubmitted ? (
                 <div className="rounded-md bg-green-50 p-4 text-center">
                   <p className="text-green-800">Blog created successfully!</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
+                  <div className="mb-2 md:mb-4">
                     <label
                       htmlFor="image"
                       className="mb-1 block text-sm font-medium text-gray-700"
@@ -191,13 +191,13 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.image && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="text-xs text-red-500">
                         {errors.image}
                       </p>
                     )}
                   </div>
 
-                  <div className="mb-4">
+                  <div className="mb-2 md:mb-4">
                     <label
                       htmlFor="title"
                       className="mb-1 block text-sm font-medium text-gray-700"
@@ -217,13 +217,13 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.title && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="text-xs text-red-500">
                         {errors.title}
                       </p>
                     )}
                   </div>
 
-                  <div className="mb-4">
+                  <div className="mb-2 md:mb-4">
                     <label
                       htmlFor="description"
                       className="mb-1 block text-sm font-medium text-gray-700"
@@ -245,13 +245,13 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     ></textarea>
                     {errors.description && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="text-xs text-red-500">
                         {errors.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="mb-4">
+                  <div className="mb-2 md:mb-4">
                     <label
                       htmlFor="author"
                       className="mb-1 block text-sm font-medium text-gray-700"
@@ -271,7 +271,7 @@ export default function PopupForm() {
                       } px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     />
                     {errors.author && (
-                      <p className="mt-1 text-xs text-red-500">
+                      <p className="text-xs text-red-500">
                         {errors.author}
                       </p>
                     )}
