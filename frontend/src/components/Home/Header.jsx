@@ -5,6 +5,7 @@ import UpdatePopup from "../../pages/UI-pages/UpdatePopup";
 import Navbar from "../Navbar";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import FileUpload from "../FileUpload";
 
 const Header = () => {
   const [userData, setUserData] = useState([]); // State to store fetched blogs
