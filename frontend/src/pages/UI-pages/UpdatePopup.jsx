@@ -1,9 +1,14 @@
 "use client";
 
+import { Pencil, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { X, Pencil } from "lucide-react";
 
-export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues = {} }) {
+export default function UpdatePopup({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialValues = {},
+}) {
   const [isVisible, setIsVisible] = useState(false);
   const [formValues, setFormValues] = useState({
     title: initialValues.title || "",
@@ -57,10 +62,16 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity duration-200 ${
+        isOpen ? "opacity-100" : "opacity-0"
+      }`}
+    >
       <div
         ref={popupRef}
-        className={`bg-white rounded-xl shadow-lg w-full max-w-md transform transition-transform duration-200 ${isOpen ? "scale-100" : "scale-95"}`}
+        className={`bg-white rounded-xl shadow-lg w-full max-w-md transform transition-transform duration-200 ${
+          isOpen ? "scale-100" : "scale-95"
+        }`}
       >
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center gap-2">
@@ -83,7 +94,9 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
           }}
           className="p-4"
         >
-          <label className="block mb-2 text-sm font-medium text-gray-700">Title</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Title
+          </label>
           <input
             type="text"
             name="title"
@@ -93,7 +106,9 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
             required
           />
 
-          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Image URL</label>
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">
+            Image URL
+          </label>
           <input
             type="text"
             name="image"
@@ -102,7 +117,9 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
           />
 
-          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Description</label>
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">
+            Description
+          </label>
           <textarea
             name="description"
             value={formValues.description}
@@ -112,7 +129,9 @@ export default function UpdatePopup({ isOpen, onClose, onSubmit, initialValues =
             required
           ></textarea>
 
-          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">Author</label>
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-700">
+            Author
+          </label>
           <input
             type="text"
             name="author"
