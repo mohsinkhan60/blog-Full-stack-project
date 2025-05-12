@@ -1,7 +1,7 @@
 "use client";
 
+import { AlertTriangle, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { X, AlertTriangle } from "lucide-react";
 
 export default function DeletePopup({ isOpen, onClose, onConfirm }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,15 +36,23 @@ export default function DeletePopup({ isOpen, onClose, onConfirm }) {
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}>
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-opacity duration-200 ${
+        isOpen ? "opacity-100" : "opacity-0"
+      }`}
+    >
       <div
         ref={popupRef}
-        className={`bg-white rounded-xl shadow-lg w-full max-w-md transform transition-transform duration-200 ${isOpen ? "scale-100" : "scale-95"}`}
+        className={`bg-white rounded-xl shadow-lg w-full max-w-md transform transition-transform duration-200 ${
+          isOpen ? "scale-100" : "scale-95"
+        }`}
       >
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center gap-2">
             <AlertTriangle className="text-red-500 h-5 w-5" />
-            <h2 className="text-lg font-semibold text-gray-800">Confirm Deletion</h2>
+            <h2 className="text-lg font-semibold text-gray-800">
+              Confirm Deletion
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -55,7 +63,10 @@ export default function DeletePopup({ isOpen, onClose, onConfirm }) {
         </div>
 
         <div className="p-4">
-          <p className="text-gray-700">Are you sure you want to delete this item? This action cannot be undone.</p>
+          <p className="text-gray-700">
+            Are you sure you want to delete this item? This action cannot be
+            undone.
+          </p>
         </div>
 
         <div className="flex justify-end gap-2 p-4 border-t bg-gray-50 rounded-b-xl">

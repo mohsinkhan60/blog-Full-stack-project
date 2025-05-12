@@ -4,7 +4,6 @@ import { useState } from "react";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import FileUpload from "../../components/FileUpload";
 
 export default function PopupForm({ onBlogCreated }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -176,9 +175,7 @@ export default function PopupForm({ onBlogCreated }) {
                   <p className="text-green-800">Blog created successfully!</p>
                 </div>
               ) : (
-                
                 <form onSubmit={handleSubmit}>
-
                   <div className="mb-2 md:mb-4">
                     <label
                       htmlFor="image"
@@ -296,8 +293,6 @@ export default function PopupForm({ onBlogCreated }) {
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
                   </div>
-                  <FileUpload />
-
                 </form>
               )}
             </div>
